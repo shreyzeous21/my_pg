@@ -7,11 +7,11 @@ export async function GET(req) {
     const reviews = await prisma.review.findMany({
       orderBy: { createdAt: "desc" },
     });
-    return NextResponse.json(reviews, { status: 200 });
+    return new NextResponse(JSON.stringify(reviews, { status: 200 }));
   } catch (error) {
     console.error("Error fetching reviews:", error);
     return NextResponse.json(
-      { message: "Error fetching reviews" },
+      JSON.stringify({ message: "Failed to fetch comments" }),
       { status: 500 }
     );
   }
