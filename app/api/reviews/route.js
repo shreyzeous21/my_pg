@@ -11,7 +11,7 @@ export const GET = async (req) => {
   } catch (error) {
     console.error("Error fetching reviews:", error);
     return NextResponse.json(
-      JSON.stringify({ message: "Failed to fetch comments" }),
+      JSON.stringify({ message: "Failed to fetch reviews" }),
       { status: 500 }
     );
   }
@@ -20,30 +20,26 @@ export const GET = async (req) => {
 // CREATE A NEW REVIEW
 export const POST = async (req) => {
   try {
-    // Get data from the request body
-    const { name, reviewText } = await req.json();
+    const body = await req.json();
 
     // Validate required fields
-    if (!name || !reviewText) {
-      return NextResponse.json(
-        { message: "Name and review text are required" },
+    if (!body.name || !body.reviewText) {
+      return new NextResponse(
+        JSON.stringify({ message: "Name and review text are required" }),
         { status: 400 }
       );
     }
 
     // Create a new review in the database
-    const review = await prisma.review.create({
-      data: {
-        name,
-        reviewText,
-      },
+    const newReview = await prisma.review.create({
+      data: { name: body.name, reviewText: body.reviewText },
     });
 
-    return NextResponse.json(review, { status: 201 });
-  } catch (error) {
-    console.error("Error creating review:", error);
-    return NextResponse.json(
-      { message: "Error creating review" },
+    return new NextResponse(JSON.stringify(newReview), { status: 201 });
+  } catch (err) {
+    console.error("Error creating review:", err);
+    return new NextResponse(
+      JSON.stringify({ message: "Failed to create review" }),
       { status: 500 }
     );
   }
