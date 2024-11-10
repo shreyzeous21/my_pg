@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "postinstall": "prisma generate",
     "lint": "next lint"
+
   },
   "dependencies": {
     "@formspree/react": "^2.5.1",
