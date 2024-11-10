@@ -2,7 +2,7 @@ import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
 // GET ALL REVIEWS
-export async function GET(req) {
+export const GET = async (req) => {
   try {
     const reviews = await prisma.review.findMany({
       orderBy: { createdAt: "desc" },
@@ -15,10 +15,10 @@ export async function GET(req) {
       { status: 500 }
     );
   }
-}
+};
 
 // CREATE A NEW REVIEW
-export async function POST(req) {
+export const POST = async (req) => {
   try {
     // Get data from the request body
     const { name, reviewText } = await req.json();
@@ -47,4 +47,4 @@ export async function POST(req) {
       { status: 500 }
     );
   }
-}
+};
