@@ -7,65 +7,60 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]); // State to store reviews
   const [loading, setLoading] = useState(true); // State for loading state
   const [error, setError] = useState(null); // State for error state
-  const [reviewText, setReviewText] = useState(""); // State for review text
-  const [name, setName] = useState(""); // State for reviewer name
+  const [newReview, setNewReview] = useState({ name: "", reviewText: "" }); // State for new review
 
   // Fetch reviews from the API
   const fetchReviews = async () => {
     try {
       const response = await fetch("/api/reviews");
-      if (response.ok) {
-        const data = await response.json();
-        setReviews(data); // Update the reviews state
-      } else {
-        setError("Failed to fetch reviews.");
+      if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
       }
-    } catch (err) {
-      setError("An error occurred while fetching reviews.");
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      setError("Failed to load reviews");
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading when done
     }
   };
 
-  // Fetch reviews when the component is mounted
-  useEffect(() => {
-    fetchReviews();
-  }, []);
-
-  const handleSubmit = async (e) => {
+  // Function to handle adding a new review
+  const handleAddReview = async (e) => {
     e.preventDefault();
-
-    // Make sure both name and reviewText are provided
-    if (!name || !reviewText) {
+    if (!newReview.name || !newReview.reviewText) {
       alert("Please fill in both your name and review.");
       return;
     }
 
-    // Send a POST request to add the review
     try {
       const response = await fetch("/api/reviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*", // Allow cross-origin requests if needed
         },
-        body: JSON.stringify({
-          name: name,
-          reviewText: reviewText,
-        }),
+        body: JSON.stringify(newReview),
       });
 
-      if (response.ok) {
-        const newReview = await response.json();
-        setReviews((prevReviews) => [newReview, ...prevReviews]); // Add the new review to the list
-        setReviewText(""); // Clear the review text input
-        setName(""); // Clear the name input
-      } else {
-        setError("Failed to submit review.");
+      if (!response.ok) {
+        throw new Error("Failed to add review");
       }
-    } catch (err) {
-      setError("An error occurred while submitting the review.");
+
+      const createdReview = await response.json();
+      setReviews((prevReviews) => [createdReview, ...prevReviews]); // Add the new review to the list
+      setNewReview({ name: "", reviewText: "" }); // Clear the form
+    } catch (error) {
+      console.error("Error adding review:", error);
+      setError("Failed to add review");
     }
   };
+
+  // Fetch reviews on component mount
+  useEffect(() => {
+    fetchReviews();
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>; // Show a loading indicator while fetching reviews
@@ -119,7 +114,7 @@ const Reviews = () => {
 
       <section className="py-12 bg-gray-100 text-center">
         <h3 className="text-2xl font-semibold mb-6">Add Your Review</h3>
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
+        <form onSubmit={handleAddReview} className="space-y-4 max-w-lg mx-auto">
           <div>
             <label htmlFor="name" className="block text-lg font-medium text-gray-700">
               Your Name
@@ -128,8 +123,8 @@ const Reviews = () => {
               type="text"
               id="name"
               name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={newReview.name}
+              onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
               className="w-full px-4 py-2 border rounded-md"
               placeholder="Your name"
             />
@@ -142,8 +137,8 @@ const Reviews = () => {
             <textarea
               id="reviewText"
               name="reviewText"
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
+              value={newReview.reviewText}
+              onChange={(e) => setNewReview({ ...newReview, reviewText: e.target.value })}
               className="w-full px-4 py-2 border rounded-md"
               placeholder="Write your review here..."
               rows="4"
@@ -153,10 +148,7 @@ const Reviews = () => {
           <div className="flex justify-between">
             <button
               type="button"
-              onClick={() => {
-                setReviewText("");
-                setName("");
-              }}
+              onClick={() => setNewReview({ name: "", reviewText: "" })}
               className="px-6 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500"
             >
               Clear
