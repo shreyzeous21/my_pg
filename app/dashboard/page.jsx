@@ -2,11 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/Auth";
+import Reviews from "./reviews/page";
+import { Menu, X } from "lucide-react";
 
 const Dashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState(null);
+  const [currentSection, setCurrentSection] = useState("reviews"); // Default section
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Track sidebar state
   const router = useRouter();
 
   useEffect(() => {
@@ -28,25 +31,116 @@ const Dashboard = () => {
     router.push("/login"); // Redirect to login page after logout
   };
 
+  // Toggle the sidebar visibility
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
       {isAuthenticated ? (
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center">
-            Welcome to the Dashboard
-          </h2>
-          <p className="text-center mb-6">
-            You are logged in and can access the dashboard.
-          </p>
-          <button
-            onClick={handleLogout}
-            className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors"
+        <div className="flex w-full">
+          {/* Left Sidebar */}
+          <div
+            className={`${
+              isSidebarOpen ? "block" : "hidden"
+            } md:block w-64 bg-gray-800 text-white h-auto p-4`}
           >
-            Logout
-          </button>
+            <h2 className="text-xl font-semibold text-center mb-8">
+              Admin Dashboard
+            </h2>
+            <ul className="space-y-6">
+              {/* Manage Reviews Section */}
+              <li>
+                <button
+                  onClick={() => setCurrentSection("reviews")}
+                  className={`w-full text-left py-2 px-4 rounded-md ${
+                    currentSection === "reviews"
+                      ? "bg-gray-700"
+                      : "hover:bg-gray-700"
+                  } transition-colors`}
+                >
+                  Manage Reviews
+                </button>
+              </li>
+
+              {/* Inquiries Section */}
+              <li>
+                <button
+                  onClick={() => setCurrentSection("inquiries")}
+                  className={`w-full text-left py-2 px-4 rounded-md ${
+                    currentSection === "inquiries"
+                      ? "bg-gray-700"
+                      : "hover:bg-gray-700"
+                  } transition-colors`}
+                >
+                  Inquiries Form
+                </button>
+              </li>
+
+              {/* Rooms Section */}
+              <li>
+                <button
+                  onClick={() => setCurrentSection("rooms")}
+                  className={`w-full text-left py-2 px-4 rounded-md ${
+                    currentSection === "rooms"
+                      ? "bg-gray-700"
+                      : "hover:bg-gray-700"
+                  } transition-colors`}
+                >
+                  Rooms
+                </button>
+              </li>
+
+              {/* Logout Button */}
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left py-2 px-4 rounded-md bg-red-600 hover:bg-red-700 transition-colors"
+                >
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1 p-6">
+            {/* Hamburger Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={toggleSidebar}
+                className="text-gray-800 focus:outline-none"
+              >
+                {isSidebarOpen ? <X size={30} /> : <Menu size={30} />}
+              </button>
+            </div>
+
+            {currentSection === "reviews" && (
+              <div>
+                <Reviews />
+              </div>
+            )}
+
+            {currentSection === "inquiries" && (
+              <div>
+                <h3 className="text-2xl font-semibold mb-4">Inquiries Form</h3>
+                {/* Add your inquiries content here */}
+                <p>Inquiries form content goes here.</p>
+              </div>
+            )}
+
+            {currentSection === "rooms" && (
+              <div>
+                <h3 className="text-2xl font-semibold mb-4">Rooms</h3>
+                {/* Add your rooms content here */}
+                <p>Rooms management content goes here.</p>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
-        <div className="text-center">
+        <div className="text-center w-full h-screen flex items-center justify-center">
           <h2 className="text-xl font-semibold">Redirecting to Login...</h2>
         </div>
       )}
