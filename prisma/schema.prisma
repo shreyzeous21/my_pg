@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGO_URI")
+}
+
+model Room {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  price       Float
+  imageUrl    String
+  createdAt   DateTime @default(now())
+  category    String
+}
+
+model Inquiry {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String
+  phoneNumber String
+  roomType    String
+  createdAt   DateTime @default(now())
+}
+
+model Review {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String // Name of the person submitting the review
+  reviewText String // The review content
+  createdAt  DateTime @default(now()) // Date the review was created
+}
