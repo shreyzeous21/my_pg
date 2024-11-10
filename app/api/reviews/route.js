@@ -1,10 +1,13 @@
 import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
+// GET ALL REVIEWS
 export async function GET(req) {
   try {
-    // Fetch all reviews from the database
-    const reviews = await prisma.review.findMany();
+    // Fetch all reviews from the database, ordered by creation date if necessary
+    const reviews = await prisma.review.findMany({
+      orderBy: { createdAt: "desc" }, // If you want to order by creation date
+    });
     return NextResponse.json(reviews, { status: 200 });
   } catch (error) {
     console.error("Error fetching reviews:", error);
@@ -12,11 +15,13 @@ export async function GET(req) {
   }
 }
 
+// CREATE A NEW REVIEW
 export async function POST(req) {
   try {
     // Get data from the request body
     const { name, reviewText } = await req.json();
 
+    // Validate required fields
     if (!name || !reviewText) {
       return NextResponse.json(
         { message: "Name and review text are required" },
