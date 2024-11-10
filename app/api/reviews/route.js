@@ -2,15 +2,15 @@ import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
 // GET ALL REVIEWS
-export const GET = async (req) => {
+export const GET = async () => {
   try {
     const reviews = await prisma.review.findMany({
       orderBy: { createdAt: "desc" },
     });
-    return new NextResponse(JSON.stringify(reviews, { status: 200 }));
+    return new NextResponse(JSON.stringify(reviews), { status: 200 });
   } catch (error) {
     console.error("Error fetching reviews:", error);
-    return NextResponse.json(
+    return new NextResponse(
       JSON.stringify({ message: "Failed to fetch reviews" }),
       { status: 500 }
     );
