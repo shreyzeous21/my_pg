@@ -57,7 +57,7 @@ const Reviews = () => {
     }
   };
 
-  // Fetch reviews on component mount
+  
   useEffect(() => {
     fetchReviews();
   }, []);
@@ -116,7 +116,10 @@ const Reviews = () => {
         <h3 className="text-2xl font-semibold mb-6">Add Your Review</h3>
         <form onSubmit={handleAddReview} className="space-y-4 max-w-lg mx-auto">
           <div>
-            <label htmlFor="name" className="block text-lg font-medium text-gray-700">
+            <label
+              htmlFor="name"
+              className="block text-lg font-medium text-gray-700"
+            >
               Your Name
             </label>
             <input
@@ -124,21 +127,28 @@ const Reviews = () => {
               id="name"
               name="name"
               value={newReview.name}
-              onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
+              onChange={(e) =>
+                setNewReview({ ...newReview, name: e.target.value })
+              }
               className="w-full px-4 py-2 border rounded-md"
               placeholder="Your name"
             />
           </div>
 
           <div>
-            <label htmlFor="reviewText" className="block text-lg font-medium text-gray-700">
+            <label
+              htmlFor="reviewText"
+              className="block text-lg font-medium text-gray-700"
+            >
               Your Review
             </label>
             <textarea
               id="reviewText"
               name="reviewText"
               value={newReview.reviewText}
-              onChange={(e) => setNewReview({ ...newReview, reviewText: e.target.value })}
+              onChange={(e) =>
+                setNewReview({ ...newReview, reviewText: e.target.value })
+              }
               className="w-full px-4 py-2 border rounded-md"
               placeholder="Write your review here..."
               rows="4"
