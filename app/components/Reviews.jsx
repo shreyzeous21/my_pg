@@ -9,7 +9,6 @@ const Reviews = () => {
   const [error, setError] = useState(null); // State for error state
   const [reviewText, setReviewText] = useState(""); // State for review text
   const [name, setName] = useState(""); // State for reviewer name
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal visibility
 
   // Fetch reviews from the API
   const fetchReviews = async () => {
@@ -60,78 +59,12 @@ const Reviews = () => {
         setReviews((prevReviews) => [newReview, ...prevReviews]); // Add the new review to the list
         setReviewText(""); // Clear the review text input
         setName(""); // Clear the name input
-        setIsModalOpen(false); // Close the modal after submitting the review
       } else {
         setError("Failed to submit review.");
       }
     } catch (err) {
       setError("An error occurred while submitting the review.");
     }
-  };
-
-  // Modal Component for adding a review
-  const Modal = ({ isOpen, onClose }) => {
-    if (!isOpen) return null; // Don't render modal if not open
-    return (
-      <div className="fixed inset-1 flex justify-center items-center z-50">
-        <div className="bg-gray-200 p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h3 className="text-2xl font-bold mb-4">Add Your Review</h3>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-lg font-medium text-gray-700"
-              >
-                Your Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md"
-                placeholder="Your name"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="reviewText"
-                className="block text-lg font-medium text-gray-700"
-              >
-                Your Review
-              </label>
-              <textarea
-                id="reviewText"
-                name="reviewText"
-                value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md"
-                placeholder="Write your review here..."
-                rows="4"
-              />
-            </div>
-
-            <div className="flex justify-between">
-              <button
-                type="button"
-                onClick={onClose}
-                className="px-6 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500"
-              >
-                Close
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Submit Review
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
   };
 
   if (loading) {
@@ -144,9 +77,9 @@ const Reviews = () => {
 
   return (
     <div>
-      <section className="py-12 bg-gray-400">
+      <section className="py-12 bg-white">
         <div className="max-w-screen-xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">What Our Hosteler`s Say</h2>
+          <h2 className="text-3xl font-bold mb-6">What Our Students Say</h2>
           <Swiper
             spaceBetween={30} // Space between slides
             centeredSlides={true} // Center the active slide
@@ -174,7 +107,7 @@ const Reviews = () => {
           >
             {reviews.map((review, index) => (
               <SwiperSlide key={index}>
-                <div className="bg-gray-200 p-6 rounded-lg shadow-md flex flex-col h-[30vh] lg:h-[30vh]">
+                <div className="bg-gray-200 p-6 rounded-lg shadow-md flex flex-col lg:h-[30vh]">
                   <p className="text-gray-700 mb-4 flex-grow">{`"${review.reviewText}"`}</p>
                   <p className="font-semibold text-gray-800">{review.name}</p>
                 </div>
@@ -184,17 +117,59 @@ const Reviews = () => {
         </div>
       </section>
 
-      {/* Move the "Add Your Review" button to below the Swiper component */}
-      <div className="text-center py-6">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-        >
-          Add Your Review
-        </button>
-      </div>
+      <section className="py-12 bg-gray-100 text-center">
+        <h3 className="text-2xl font-semibold mb-6">Add Your Review</h3>
+        <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
+          <div>
+            <label htmlFor="name" className="block text-lg font-medium text-gray-700">
+              Your Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md"
+              placeholder="Your name"
+            />
+          </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+          <div>
+            <label htmlFor="reviewText" className="block text-lg font-medium text-gray-700">
+              Your Review
+            </label>
+            <textarea
+              id="reviewText"
+              name="reviewText"
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md"
+              placeholder="Write your review here..."
+              rows="4"
+            />
+          </div>
+
+          <div className="flex justify-between">
+            <button
+              type="button"
+              onClick={() => {
+                setReviewText("");
+                setName("");
+              }}
+              className="px-6 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500"
+            >
+              Clear
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Submit Review
+            </button>
+          </div>
+        </form>
+      </section>
     </div>
   );
 };
