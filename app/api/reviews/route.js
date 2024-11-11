@@ -1,46 +1,82 @@
 import prisma from "@/utils/connect";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// GET ALL REVIEWS
-export const GET = async () => {
+// GET request handler: Fetch all reviews
+export async function GET(req) {
   try {
-    const reviews = await prisma.review.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    return new NextResponse(JSON.stringify(reviews), { status: 200 });
-  } catch (error) {
-    console.error("Error fetching reviews:", error);
-    return new NextResponse(
-      JSON.stringify({ message: "Failed to fetch reviews" }),
+    // Fetch all reviews from the database using Prisma
+    const reviews = await prisma.review.findMany();
+
+    // Return the reviews as JSON
+    return NextResponse.json(reviews, { status: 200 });
+  } catch (err) {
+    console.error("Error fetching reviews:", err);
+    return NextResponse.json(
+      { error: "Failed to fetch reviews" },
       { status: 500 }
     );
   }
-};
+}
 
-// CREATE A NEW REVIEW
-export const POST = async (req) => {
+// POST request handler: Create a new review
+export async function POST(req) {
   try {
-    const body = await req.json();
+    const { name, reviewText } = await req.json();
 
-    // Validate required fields
-    if (!body.name || !body.reviewText) {
-      return new NextResponse(
-        JSON.stringify({ message: "Name and review text are required" }),
+    // Validate incoming data
+    if (!name || !reviewText) {
+      return NextResponse.json(
+        { error: "Name and reviewText are required" },
         { status: 400 }
       );
     }
 
     // Create a new review in the database
     const newReview = await prisma.review.create({
-      data: { name: body.name, reviewText: body.reviewText },
+      data: {
+        name,
+        reviewText,
+      },
     });
 
-    return new NextResponse(JSON.stringify(newReview), { status: 201 });
+    // Return the newly created review
+    return NextResponse.json(newReview, { status: 201 });
   } catch (err) {
     console.error("Error creating review:", err);
-    return new NextResponse(
-      JSON.stringify({ message: "Failed to create review" }),
+    return NextResponse.json(
+      { error: "Failed to create review" },
       { status: 500 }
     );
   }
-};
+}
+
+// DELETE request handler: Delete a review by ID (Path parameter)
+export async function DELETE(req, { params }) {
+  try {
+    const { id } = params;
+
+    // Validate that ID is provided
+    if (!id) {
+      return NextResponse.json(
+        { error: "Review ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // Delete the review from the database
+    const deletedReview = await prisma.review.delete({
+      where: {
+        id,
+      },
+    });
+
+    // Return a 204 response (no content)
+    return NextResponse.json(deletedReview, { status: 204 });
+  } catch (err) {
+    console.error("Error deleting review:", err);
+    return NextResponse.json(
+      { error: "Failed to delete review" },
+      { status: 500 }
+    );
+  }
+}

@@ -3,36 +3,60 @@
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState([]); // Use regular JS array for reviews
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch reviews on component mount
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch("/api/reviews"); // Adjust the URL if needed
-        if (!response.ok) {
-          throw new Error("Failed to fetch reviews");
-        }
-        const data = await response.json();
-        setReviews(data); // Assuming the API returns an array of reviews
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
+  // Fetch all reviews on component mount
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch("/api/reviews");
+      if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
       }
-    };
+      const data = await response.json(); // The API response should be an array of reviews
+      setReviews(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchReviews();
   }, []);
 
+  // Delete review function with optimistic UI update
+  const deleteReview = async (id) => {
+    const originalReviews = [...reviews]; // Create a copy of the current reviews
+
+    // Optimistically update the UI by removing the review
+    setReviews((prevReviews) =>
+      prevReviews.filter((review) => review.id !== id)
+    );
+
+    try {
+      const response = await fetch(`/api/reviews/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete review");
+      }
+
+      // If successful, clear any existing errors
+      setError(null);
+    } catch (err) {
+      console.error("Error deleting review:", err);
+      setReviews(originalReviews); // Rollback to original state if deletion fails
+      setError(err.message || "Failed to delete review");
+    }
+  };
+
   if (loading) {
     return <div>Loading reviews...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
   }
 
   return (
@@ -44,13 +68,25 @@ const Page = () => {
             <li>No reviews available</li>
           ) : (
             reviews.map((review) => (
-              <li key={review.id} className="border p-4 rounded-md">
-                <p className="font-bold">{review.name}</p>
-                <p>{review.reviewText}</p>
+              <li
+                key={review.id}
+                className="border p-4 rounded-md flex justify-between items-center"
+              >
+                <div>
+                  <p className="font-bold">{review.name}</p>
+                  <p>{review.reviewText}</p>
+                </div>
+                <button
+                  onClick={() => deleteReview(review.id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded-md"
+                >
+                  Delete
+                </button>
               </li>
             ))
           )}
         </ul>
+        {error && <div className="text-red-500 mt-4">{error}</div>}
       </div>
     </div>
   );
