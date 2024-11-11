@@ -1,5 +1,5 @@
 import prisma from "@/utils/connect";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 // GET request handler: Fetch all reviews
 export async function GET(req) {

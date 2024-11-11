@@ -1,47 +1,59 @@
-import prisma from "@/utils/connect"; // Adjust this path to match your setup
+import prisma from "@/utils/connect";
 import { NextResponse } from "next/server";
 
-// GET ALL INQUIRIES
-export const GET = async () => {
+// POST API to handle inquiry creation
+export async function POST(req) {
   try {
-    const inquiries = await prisma.inquiry.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    return NextResponse.json(inquiries, { status: 200 });
-  } catch (err) {
-    console.error("Error fetching inquiries:", err);
-    return NextResponse.json(
-      { message: "Failed to fetch inquiries" },
-      { status: 500 }
-    );
-  }
-};
+    const { name, email, phoneNumber, roomType } = await req.json();
 
-// CREATE A NEW INQUIRY
-export const POST = async (req) => {
-  try {
-    const body = await req.json();
-    const { name, email, phoneNumber, roomType } = body;
-
-    // Validate required fields
+    // Validate input data
     if (!name || !email || !phoneNumber || !roomType) {
       return NextResponse.json(
-        { message: "Name, email, phone number, and room type are required." },
+        { message: "All fields are required" },
         { status: 400 }
       );
     }
 
-    // Create new inquiry
+    // Create a new inquiry in the database
     const newInquiry = await prisma.inquiry.create({
-      data: { name, email, phoneNumber, roomType },
+      data: {
+        name,
+        email,
+        phoneNumber,
+        roomType,
+      },
     });
 
-    return NextResponse.json(newInquiry, { status: 201 });
-  } catch (err) {
-    console.error("Error creating inquiry:", err);
+    // Return the created inquiry as the response
     return NextResponse.json(
-      { message: "Failed to submit inquiry." },
+      { message: "Inquiry created successfully", inquiry: newInquiry },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error creating inquiry:", error);
+    return NextResponse.json(
+      { message: "Failed to create inquiry", error: error.message },
       { status: 500 }
     );
   }
-};
+}
+
+// GET API to fetch all inquiries
+export async function GET() {
+  try {
+    // Fetch all inquiries from the database
+    const inquiries = await prisma.inquiry.findMany();
+
+    // Return the inquiries as the response
+    return NextResponse.json(
+      { message: "Inquiries fetched successfully", inquiries },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching inquiries:", error);
+    return NextResponse.json(
+      { message: "Failed to fetch inquiries", error: error.message },
+      { status: 500 }
+    );
+  }
+}

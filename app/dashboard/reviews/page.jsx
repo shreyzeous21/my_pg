@@ -56,38 +56,54 @@ const Page = () => {
   };
 
   if (loading) {
-    return <div>Loading reviews...</div>;
+    return <div className="text-center text-gray-500">Loading reviews...</div>;
   }
 
   return (
-    <div className="flex min-h-screen">
-      <div className="flex-1 p-6 overflow-y-auto max-h-screen">
-        <h3 className="text-2xl font-semibold mb-4">Reviews</h3>
-        <ul className="space-y-4">
-          {reviews.length === 0 ? (
-            <li>No reviews available</li>
-          ) : (
-            reviews.map((review) => (
+    <div className="p-6 font-sans bg-white rounded-lg shadow-lg">
+      <h2 className="text-3xl font-semibold text-green-600 mb-4">Reviews</h2>
+
+      {/* Display error message */}
+      {error && (
+        <div className="text-red-500 mb-4">
+          <strong>{error}</strong>
+        </div>
+      )}
+
+      {/* Show loading message during deletion */}
+      {loading && (
+        <p className="text-gray-500">Deleting review... Please wait.</p>
+      )}
+
+      {/* Display reviews or message if none exist */}
+      {reviews.length === 0 ? (
+        <p className="text-gray-500">No reviews found.</p>
+      ) : (
+        <div className="max-h-96 overflow-y-auto scrollbar-hidden">
+          <ul className="space-y-4">
+            {reviews.map((review) => (
               <li
                 key={review.id}
-                className="border p-4 rounded-md flex justify-between items-center"
+                className="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition-all duration-300"
               >
-                <div>
-                  <p className="font-bold">{review.name}</p>
-                  <p>{review.reviewText}</p>
+                <div className="flex flex-col space-y-2">
+                  <p className="text-lg font-bold text-gray-800">
+                    <strong>{review.name}</strong>
+                  </p>
+                  <p className="text-sm text-gray-600">{review.reviewText}</p>
                 </div>
+
                 <button
                   onClick={() => deleteReview(review.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded-md"
+                  className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
                 >
                   Delete
                 </button>
               </li>
-            ))
-          )}
-        </ul>
-        {error && <div className="text-red-500 mt-4">{error}</div>}
-      </div>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
