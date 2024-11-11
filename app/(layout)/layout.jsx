@@ -18,6 +18,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="shortcut icon" href="/logo.svg" type="image/x-icon" />
+      </head>
       <body className={`${font.variable} antialiased bg-gray-400 relative`}>
         <Header />
         <AuthProvider>{children}</AuthProvider>
