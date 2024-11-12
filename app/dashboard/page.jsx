@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Reviews from "./reviews/page";
 import Inquiries from "./inquiries/page";
+import Rooms from "./rooms/page";
 import { Menu, X } from "lucide-react";
 
 const Dashboard = () => {
@@ -131,9 +132,7 @@ const Dashboard = () => {
 
             {currentSection === "rooms" && (
               <div>
-                <h3 className="text-2xl font-semibold mb-4">Rooms</h3>
-                {/* Add your rooms content here */}
-                <p>Rooms management content goes here.</p>
+                <Rooms />
               </div>
             )}
           </div>
