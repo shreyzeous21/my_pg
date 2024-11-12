@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/utils/connect'; // Assuming your prisma client is exported from this file
+import { NextResponse } from "next/server";
+import prisma from "@/utils/connect"; // Assuming your prisma client is exported from this file
 
 export async function DELETE(req, { params }) {
   const { id } = params;
 
   // Validate that ID is provided
   if (!id) {
-    return NextResponse.json({ message: 'ID is required' }, { status: 400 });
+    return NextResponse.json({ message: "ID is required" }, { status: 400 });
   }
 
   try {
@@ -18,9 +18,15 @@ export async function DELETE(req, { params }) {
     });
 
     // Return a response confirming the deletion
-    return NextResponse.json({ message: `Review with ID ${id} deleted`, deletedReview }, { status: 200 });
+    return NextResponse.json(
+      { message: `Review with ID ${id} deleted`, deletedReview },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error deleting review:", error);
-    return NextResponse.json({ message: 'Failed to delete review', error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to delete review", error: error.message },
+      { status: 500 }
+    );
   }
 }
