@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { useForm, ValidationError } from "@formspree/react";
 
 const Page = () => {
+  // State to store the formatted date
   const [currentDate, setCurrentDate] = useState("");
   const [state, handleSubmit] = useForm("mkgnbgpb");
-  const [showModal, setShowModal] = useState(false);  // Modal state
 
   useEffect(() => {
     const formatDate = () => {
@@ -21,34 +22,14 @@ const Page = () => {
     };
 
     formatDate();
+
     setInterval(() => {
       formatDate();
     }, 1000 * 60 * 60 * 24);
   }, []);
 
-  // Handle form submission success
-  const handleFormSuccess = () => {
-    setShowModal(true);
-    setTimeout(() => {
-      setShowModal(false); // Close the modal after 3 seconds
-    }, 3000);
-  };
-
-  if (state.succeeded) {
-    handleFormSuccess(); // Show the success message
-  }
-
   return (
     <>
-      {/* Modal for Thank You message */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <p className="text-lg font-semibold">Thanks for your message!</p>
-          </div>
-        </div>
-      )}
-
       <div className="mx-auto flex flex-col px-10 py-10 bg-white h-auto w-full">
         <div className="flex flex-col py-10">
           <div className="text-4xl leading-snug text-black">{currentDate}</div>
@@ -101,7 +82,7 @@ const Page = () => {
         </div>
 
         {/* Contact Form Section for Students */}
-        <div className="h-auto flex flex-col justify-center py-10  w-full">
+        <div className="h-auto flex flex-col justify-center py-10 bg-gray-100 w-full">
           <div className="text-center text-3xl font-bold text-black mb-6">
             <p className="text-red-500">Contact Us</p>
             <p className="text-sm text-red-500 mt-2">
@@ -111,7 +92,7 @@ const Page = () => {
 
           {/* Formspree Contact Form */}
           <form
-            onSubmit={(e) => { handleSubmit(e); handleFormSuccess(); }}
+            onSubmit={handleSubmit}
             className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -197,6 +178,8 @@ const Page = () => {
                 Submit
               </button>
             </div>
+
+            {state.succeeded && <div className="py-10 text-center text-xl text-green-500 font-semibold">Thanks for your message!</div>}
           </form>
         </div>
       </div>
