@@ -1,7 +1,7 @@
 import { Poppins } from "next/font/google";
 import "../globals.css";
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
+import HeaderFood from "@/app/components/HeaderFood";
+import FooterFood from "@/app/components/FooterFood";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -19,9 +19,9 @@ export default function FoodLayout({ children }) {
     <html lang="en">
       <link rel="shortcut icon" href="/logo.svg" type="image/x-icon" />
       <body className={` ${font.variable} antialiased bg-gray-400`}>
-        <Header />
+        <HeaderFood />
         {children}
-        <Footer />
+        <FooterFood />
         {/* Map Floating Icon */}
         <a
           href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d560.8995547456226!2d77.4941956859611!3d28.754184824279413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf5fa60bdb237%3A0xd2682f4497e245a8!2sShrey%20lunch%20and%20dinner%20pg!5e1!3m2!1sen!2sin!4v1731229094880!5m2!1sen!2sin"

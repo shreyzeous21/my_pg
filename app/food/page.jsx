@@ -26,24 +26,30 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center py-6 bg-gray-100">
-      <div className="flex flex-col items-center space-y-2">
-        {/* Logo Image */}
-        <Image
-          src="/foodZone.jpg"
-          height={40}
-          width={40}
-          alt="Food Zone Logo"
-          className="object-contain"
-        />
+    <>
+      <div className="mx-auto flex flex-col px-10 py-10 bg-white h-auto w-full">
+        <div className="flex flex-col py-10">
+          <div className="text-4xl leading-snug  text-black">{currentDate}</div>
+          <h1 className="text-xl font-bold">
+            Food <span className="text-[#ff0000]">Zone </span>
+          </h1>
+        </div>
 
-        {/* Logo Text */}
-        <h1 className="text-4xl font-bold text-gray-800">Food Zone</h1>
-
-        {/* Current Date */}
-        <p className="text-lg text-gray-600">{currentDate}</p>
+        <div className="flex  flex-col  justify-center items-center w-full py-4 px-6 rounded-lg shadow-md">
+          <div className="flex justify-between w-full items-center gap-2 flex-col lg:flex-row">
+            <p className="text-sm font-semibold text-black">
+              Let`s eat, Welcome to our Food Zone →
+            </p>
+            <a
+              href="tel:+91-9720528622"
+              className="text-sm font-semibold bg-red-500 rounded-lg p-4 text-black"
+            >
+              Call Us: +91-9720528622
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
