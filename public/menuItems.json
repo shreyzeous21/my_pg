@@ -1,0 +1,55 @@
+{
+    "lunch": [
+      {
+        "name": "Vegetable Fried Rice",
+        "description": "Stir-fried rice with mixed vegetables, soy sauce, and spices"
+      },
+      {
+        "name": "Chole Bhature",
+        "description": "Chickpeas cooked in spicy gravy, served with deep-fried bread (bhature)"
+      },
+      {
+        "name": "Paneer Tikka",
+        "description": "Grilled cottage cheese marinated in yogurt and spices"
+      },
+      {
+        "name": "Dal Makhani",
+        "description": "Rich lentil curry cooked with butter and cream"
+      },
+      {
+        "name": "Aloo Paratha",
+        "description": "Whole wheat flatbread stuffed with spiced mashed potatoes"
+      },
+      {
+        "name": "Raita",
+        "description": "Cool yogurt mixed with cucumber, spices, and herbs"
+      }
+    ],
+    "dinner": [
+      {
+        "name": "Butter Chicken",
+        "description": "Chicken cooked in a rich and creamy tomato-based gravy"
+      },
+      {
+        "name": "Veg Biryani",
+        "description": "Fragrant rice dish with mixed vegetables and aromatic spices"
+      },
+      {
+        "name": "Tandoori Chicken",
+        "description": "Chicken marinated in yogurt and spices, then grilled in a tandoor"
+      },
+      {
+        "name": "Mushroom Makhani",
+        "description": "Mushrooms cooked in a rich, creamy tomato gravy"
+      },
+      {
+        "name": "Kadhi Pakora",
+        "description": "Gram flour fritters in a tangy yogurt gravy"
+      },
+      {
+        "name": "Jeera Rice",
+        "description": "Rice cooked with cumin seeds and light spices"
+      }
+    ]
+  }
+  
