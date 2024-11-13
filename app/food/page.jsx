@@ -7,6 +7,7 @@ import { useForm, ValidationError } from "@formspree/react";
 const Page = () => {
   // State to store the formatted date
   const [currentDate, setCurrentDate] = useState("");
+  const [state, handleSubmit] = useForm("mkgnbgpb");
 
   useEffect(() => {
     const formatDate = () => {
@@ -27,7 +28,6 @@ const Page = () => {
     }, 1000 * 60 * 60 * 24);
   }, []);
 
-  const [state, handleSubmit] = useForm("mkgnbgpb"); // Replace with your Formspree form ID
   if (state.succeeded) {
     return <p>Thanks for your message!</p>;
   }
