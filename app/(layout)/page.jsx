@@ -2,7 +2,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Lock, Wifi, House } from "lucide-react";
+import { Lock, Wifi, House, Droplets, Cable } from "lucide-react";
 import RoomList from "../components/RoomList";
 import Reviews from "../components/Reviews";
 
@@ -65,6 +65,27 @@ const Home = () => {
               <p className="text-gray-600">
                 Regular cleaning services to keep your living space neat and
                 tidy.
+              </p>
+            </div>
+            {/* Water Feature */}
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="flex justify-center items-center text-5xl text-red-500 mb-4">
+                <Droplets />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Water Supply</h3>
+              <p className="text-gray-600">
+                Access to clean drinking water and modern bathroom facilities.
+              </p>
+            </div>
+            {/* Generator Facility Feature */}
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="flex justify-center items-center text-5xl text-red-500 mb-4">
+                <Cable />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Generator Facility</h3>
+              <p className="text-gray-600">
+                Uninterrupted power supply for a hassle-free living experience &
+                Inverters.
               </p>
             </div>
           </div>
