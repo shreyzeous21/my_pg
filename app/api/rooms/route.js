@@ -9,7 +9,10 @@ export const GET = async () => {
     });
     return NextResponse.json(rooms, { status: 200 });
   } catch (err) {
-    console.error("Error fetching rooms:", err);
+    console.error(
+      "Error fetching rooms:",
+      err instanceof Error ? err.message : err
+    ); // Improved error logging
     return NextResponse.json(
       { message: "Failed to fetch rooms" },
       { status: 500 }
@@ -34,14 +37,33 @@ export const POST = async (req) => {
       );
     }
 
+    // Ensure price is a valid number
+    const parsedPrice = parseFloat(price);
+    if (isNaN(parsedPrice)) {
+      return NextResponse.json(
+        { message: "Price must be a valid number" },
+        { status: 400 }
+      );
+    }
+
     // Create new room with category
     const newRoom = await prisma.room.create({
-      data: { name, description, price, imageUrl, category },
+      data: {
+        name,
+        description,
+        price: parsedPrice, // Use the parsed number
+        imageUrl,
+        category,
+      },
     });
 
     return NextResponse.json(newRoom, { status: 201 });
   } catch (err) {
-    console.error("Error creating room:", err);
+    // Proper error logging
+    console.error(
+      "Error creating room:",
+      err instanceof Error ? err.message : err
+    ); // Improved error logging
     return NextResponse.json(
       { message: "Failed to create room" },
       { status: 500 }

@@ -1,6 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState, useEffect } from "react";
 import { useForm, ValidationError } from "@formspree/react";
+import { X } from "lucide-react";
 
 const Page = () => {
   const [currentDate, setCurrentDate] = useState("");
@@ -10,7 +12,15 @@ const Page = () => {
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [formStatus, setFormStatus] = useState(""); // To track form submission status
   const [menuItems, setMenuItems] = useState(null); // State for menu data
+  const [showQRCode, setShowQRCode] = useState(false);
 
+  const handlePaymentClick = () => {
+    setShowQRCode(true); // Show the QR code on button click
+  };
+
+  const handleCloseQRCode = () => {
+    setShowQRCode(false); // Close the QR code section
+  };
   useEffect(() => {
     const formatDate = () => {
       const options = {
@@ -159,7 +169,7 @@ const Page = () => {
       </div>
 
       {/* Contact Form Section for Students */}
-      <div className="h-auto flex flex-col justify-center py-10 w-full">
+      <div className="h-auto flex flex-col justify-center py-10 w-auto">
         <div className="text-center text-3xl font-bold text-black mb-6">
           <p className="text-red-500">Contact Us</p>
           <p className="text-sm text-red-500 mt-2">
@@ -170,9 +180,9 @@ const Page = () => {
         {/* Formspree Contact Form */}
         <form
           onSubmit={handleFormSubmit} // Use the updated submit handler
-          className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg"
+          className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {/* Name Input */}
             <div>
               <label
@@ -263,6 +273,60 @@ const Page = () => {
             {formStatus}
           </div>
         )}
+      </div>
+
+      <div className="h-auto flex flex-col justify-center py-10 w-full">
+        {/* Payment Section Title */}
+        <div className="text-center text-3xl font-bold text-black mb-6">
+          <p className="text-red-500">Make a Payment</p>
+          <p className="text-sm text-red-500 mt-2">
+            Secure your reservation by completing your payment.
+          </p>
+        </div>
+
+        {/* Payment Button */}
+        <div className="flex justify-center">
+          <button
+            onClick={handlePaymentClick}
+            className="bg-red-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-red-600 focus:outline-none"
+          >
+            Proceed to Payment
+          </button>
+        </div>
+
+        {/* QR Code Display with Close Button */}
+        {showQRCode && (
+          <div className="relative flex justify-center lg:h-[70vh] lg:w-[50vw] mx-auto mt-6">
+            {/* Close Button */}
+            <button
+              onClick={handleCloseQRCode}
+              className="absolute  p-2 bg-white rounded-full shadow-lg z-10" // Adjusted for better positioning
+            >
+              <X className="text-red-500" size={24} /> {/* X icon */}
+            </button>
+
+            {/* QR Code */}
+            <img
+              src="/qr.jpeg" // Replace with the actual path to your QR code image
+              alt="QR Code for Payment"
+              className="object-cover bg-center" // Ensure image covers the container
+            />
+          </div>
+        )}
+
+        {/* Additional Payment Assistance Text */}
+        <div className="mt-4 text-center text-sm text-gray-600">
+          <p>
+            For assistance with payments, please contact us at{" "}
+            <a
+              href="tel:+919720528622"
+              className="underline font-bold text-red-500"
+            >
+              +91-9720528622
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </div>
   );
