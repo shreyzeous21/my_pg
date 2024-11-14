@@ -41,9 +41,11 @@ const Page = () => {
 
     // Update form status based on success/failure
     if (state.succeeded) {
-      setFormStatus("Thanks for your message!");
+      setFormStatus("Thanks for your message. We are expecting you!");
     } else if (state.errors.length > 0) {
-      setFormStatus("There was an error submitting the form. Please try again.");
+      setFormStatus(
+        "There was an error submitting the form. Please try again."
+      );
     }
   };
 
@@ -81,36 +83,57 @@ const Page = () => {
 
       {/* Food Timing Section */}
       <div className="h-auto flex flex-col justify-center py-10 w-full text-black">
-        <div className="text-center text-3xl font-bold text-black mb-6">
+        <div className="text-center text-4xl font-bold text-black mb-6">
           <p className="text-red-500">Food Timing</p>
+
           <p className="text-sm text-red-500 mt-2">
             Serving you with the best home-cooked meals
           </p>
         </div>
 
         {/* Meal Selection (Lunch or Dinner) */}
-        <div className="flex items-center justify-center gap-8 mb-6">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-6">
           <div
-            className="bg-white text-center p-8 rounded-lg shadow-lg w-56 hover:scale-105 transform transition-all duration-300 cursor-pointer"
-            onClick={() => setSelectedMeal(selectedMeal === "lunch" ? null : "lunch")} // Toggle lunch menu visibility
+            className="bg-white text-center p-6 md:p-8 rounded-lg shadow-lg w-full md:w-56 hover:scale-105 transform transition-all duration-300 cursor-pointer"
+            onClick={() =>
+              setSelectedMeal(selectedMeal === "lunch" ? null : "lunch")
+            } // Toggle lunch menu visibility
           >
-            <p className="text-2xl font-semibold text-red-500 mb-2">Lunch</p>
-            <p className="text-lg text-black">12:00 PM - 2:00 PM</p>
+            <p className="text-xl md:text-2xl font-semibold text-red-500 mb-2">
+              Lunch
+            </p>
+            <p className="text-md md:text-lg text-black mb-3">
+              12:00 PM - 2:00 PM
+            </p>
+            <p className="text-sm text-gray-500">
+              Tap to view our delicious lunch menu!
+            </p>
           </div>
 
           <div
-            className="bg-white text-center p-8 rounded-lg shadow-lg w-56 hover:scale-105 transform transition-all duration-300 cursor-pointer"
-            onClick={() => setSelectedMeal(selectedMeal === "dinner" ? null : "dinner")} // Toggle dinner menu visibility
+            className="bg-white text-center p-6 md:p-8 rounded-lg shadow-lg w-full md:w-56 hover:scale-105 transform transition-all duration-300 cursor-pointer"
+            onClick={() =>
+              setSelectedMeal(selectedMeal === "dinner" ? null : "dinner")
+            } // Toggle dinner menu visibility
           >
-            <p className="text-2xl font-semibold text-red-500 mb-2">Dinner</p>
-            <p className="text-lg text-black">7:30 PM - 10:00 PM</p>
+            <p className="text-xl md:text-2xl font-semibold text-red-500 mb-2">
+              Dinner
+            </p>
+            <p className="text-md md:text-lg text-black mb-3">
+              7:30 PM - 10:00 PM
+            </p>
+            <p className="text-sm text-gray-500">
+              Tap to see what’s cooking for dinner!
+            </p>
           </div>
         </div>
 
         {/* Conditional Rendering of Menu Items */}
         {selectedMeal && (
           <div className="flex flex-col items-center">
-            <h3 className="text-2xl font-bold text-black mb-4">{selectedMeal === "lunch" ? "Lunch Menu" : "Dinner Menu"}</h3>
+            <h3 className="text-2xl font-bold text-black mb-4">
+              {selectedMeal === "lunch" ? "Lunch Menu" : "Dinner Menu"}
+            </h3>
 
             {/* Responsive Table Layout */}
             <div className="w-full max-w-4xl mx-auto mb-8">
@@ -136,11 +159,11 @@ const Page = () => {
       </div>
 
       {/* Contact Form Section for Students */}
-      <div className="h-auto flex flex-col justify-center py-10 bg-gray-100 w-full">
+      <div className="h-auto flex flex-col justify-center py-10 w-full">
         <div className="text-center text-3xl font-bold text-black mb-6">
           <p className="text-red-500">Contact Us</p>
           <p className="text-sm text-red-500 mt-2">
-            If you have any questions or inquiries, feel free to reach out!
+            Send us a message to let us know you’re coming!
           </p>
         </div>
 
