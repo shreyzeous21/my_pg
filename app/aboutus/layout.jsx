@@ -18,7 +18,7 @@ export default function AboutLayout({ children }) {
   return (
     <html lang="en">
       <link rel="shortcut icon" href="/logo.svg" type="image/x-icon" />
-      <body className={` ${font.variable} antialiased bg-gray-400`}>
+      <body className={` ${font.variable} antialiased bg-gray-100`}>
         <Header />
         {children}
         <Footer />

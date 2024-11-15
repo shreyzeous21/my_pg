@@ -48,7 +48,7 @@ const HostelInquiryForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full py-10 bg-gray-400 px-6">
+    <div className="flex justify-center items-center h-full py-10 bg-gray-100 px-6">
       <div className="bg-black w-full max-w-2xl p-6 rounded-lg shadow-md text-white">
         <h1 className="text-3xl font-bold text-center underline mb-6">
           Contact Us
