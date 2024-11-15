@@ -24,7 +24,7 @@ export default function RoomLayout({ children }) {
         <Footer />
         {/* Map Floating Icon */}
         <a
-          href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d560.8995547456226!2d77.4941956859611!3d28.754184824279413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf5fa60bdb237%3A0xd2682f4497e245a8!2sShrey%20lunch%20and%20dinner%20pg!5e1!3m2!1sen!2sin!4v1731229094880!5m2!1sen!2sin"
+          href="https://maps.app.goo.gl/kjM1p7AuU5QriVnt7"
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-[5rem] right-4 bg-blue-500 p-1 rounded-full shadow-lg hover:bg-blue-600 transition duration-300"
